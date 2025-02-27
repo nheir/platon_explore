@@ -16,12 +16,20 @@ export async function load({ params }) {
         "mode": "cors"
     }).then((r) => r.json());
 
-    answers.exercises.reverse();
+    if (answers.exercises) {
+        answers.exercises.reverse();
 
-    const answerRegex = />(\{.*\})</;
-    for (const a of answers.exercises) {
-        a.form = a.form.match(answerRegex);
-        a.form = JSON.parse(a.form[1]);
+        const answerRegex = />(\{.*\})</g;
+        for (const a of answers.exercises) {
+            const form = a.form;
+            const groups = form.matchAll(answerRegex);
+            a.components = [];
+            for (const group of groups) {
+                try {
+                    a.components.push(JSON.parse(group[1]));
+                } catch { }
+            }
+        }
     }
 
     return answers;
