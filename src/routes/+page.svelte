@@ -1,6 +1,6 @@
-<script lang="ts">
-    import { Bearer } from "$lib";
-</script>
+<form method="post" action="/jwt">
+    <input name="token">
+    <input value="Use" type="submit">
+</form>
 
-Current bearer :
-<code>{Bearer}</code>
+<a href="https://platon.univ-eiffel.fr/">Platon</a>

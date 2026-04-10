@@ -1,7 +1,4 @@
-import { Bearer } from '$lib';
-import { error } from '@sveltejs/kit';
-
-export async function load({ params }) {
+export async function load({ params, cookies }) {
     const sessionId = params.sessionId;
 
     const answers = await fetch(`https://platon.univ-eiffel.fr/api/v1/player/play/answers`, {
@@ -9,7 +6,7 @@ export async function load({ params }) {
         "headers": {
             "Content-Type": "application/json",
             "Accept": "application/json",
-            "Authorization": `Bearer ${Bearer}`,
+            "Authorization": `Bearer ${cookies.get('token')}`,
         },
         "body": JSON.stringify({ "sessionId": sessionId }),
         "method": "POST",

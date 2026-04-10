@@ -1,13 +1,11 @@
-import { Bearer } from '$lib';
-
-export async function load({ params }) {
+export async function load({ params, cookies }) {
     const sessionId = params.sessionId;
 
     const comments = await fetch(`https://platon.univ-eiffel.fr/api/v1/results/session/${sessionId}/comments`, {
         "credentials": "include",
         "headers": {
             "Accept": "application/json",
-            "Authorization": `Bearer ${Bearer}`,
+            "Authorization": `Bearer ${cookies.get('token')}`,
         },
         "method": "GET",
         "mode": "cors"

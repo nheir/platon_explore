@@ -1,14 +1,11 @@
-import { Bearer } from '$lib';
-import { error } from '@sveltejs/kit';
-
-export async function load({ params }) {
+export async function load({ params, cookies}) {
     const courseId = params.courseId;
 
     const course = await fetch(`https://platon.univ-eiffel.fr/api/v1/courses/${courseId}`, {
         "credentials": "include",
         "headers": {
             "Accept": "application/json",
-            "Authorization": `Bearer ${Bearer}`,
+            "Authorization": `Bearer ${cookies.get('token')}`,
         },
         "method": "GET",
         "mode": "cors"
