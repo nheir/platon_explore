@@ -14,10 +14,6 @@
     {@html codeStyle}
 </svelte:head>
 
-<details>
-    <pre>{JSON.stringify(data, null, 2)}</pre>
-</details>
-
 {#if !data.exercises || data.exercises.length == 0}
     Vide
 {:else}
@@ -27,14 +23,20 @@
             >Environment</a
         >
     </p>
+
     <div class="statement">
         {@html marked(data.exercises[0].statement)}
     </div>
 
+    <table>
+        <tr><td>startedAt</td><td>{data.exercises[0].startedAt}</td></tr>
+        <tr><td>lastGradedAt</td><td>{data.exercises[0].lastGradedAt}</td></tr>
+    </table>
+
     <div class="container-fluid">
-        {#each data.exercises as { feedbacks, form, components }}
+        {#each data.exercises as { feedbacks, form_without_components, components }}
             <div class="answer row">
-                {#each components as component}
+                {#each Object.values(components) as component}
                     {#if component.selector == "wc-code-editor"}
                         <div class="col">
                             <Highlight language={clang} code={component.code} />
@@ -49,7 +51,10 @@
                             </div>
                         {/each}
                     {/if}
-                    {#each components as component}
+                    {#if form_without_components}
+                        <pre>{form_without_components}</pre>
+                    {/if}
+                    {#each Object.values(components) as component (component.cid)}
                         {#if component.selector == "wc-foldable-feedback"}
                             <FoldableFeedback content={component.content} />
                         {/if}
@@ -76,3 +81,7 @@
         background: #0f02;
     }
 </style>
+
+<details>
+    <pre>{JSON.stringify(data, null, 2)}</pre>
+</details>

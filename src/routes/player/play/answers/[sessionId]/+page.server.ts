@@ -16,17 +16,31 @@ export async function load({ params, cookies }) {
     if (answers.exercises) {
         answers.exercises.reverse();
 
-        const answerRegex = />(\{.*\})</g;
+        const answerRegex = /<script type='application\/json' id='([-0-9a-f]+)'>(\{.*\})<\/script>/g;
         for (const a of answers.exercises) {
-            const form = a.form;
-            const groups = form.matchAll(answerRegex);
-            a.components = [];
-            for (const group of groups) {
+            const form = a.form as string;
+            a.components = {}
+            a.form_without_components = form.replaceAll(answerRegex, function (match, id, json) {
                 try {
-                    a.components.push(JSON.parse(group[1]));
+                    const payload = JSON.parse(json);
+                    a.components[id] = payload;
+                    return "";
                 } catch { }
-            }
+                return match;
+            });
         }
+
+        const formRegex = /<([-a-z]+) data-script-id='([-0-9a-f]+)' cid='([-0-9a-f]+)'>.*?<\/[-a-z]+>/g;
+        for (const a of answers.exercises) {
+            const form = a.form_without_components as string;
+            a.form_without_components = form.replaceAll(formRegex, function(match, tag, id, cid) {
+                if (a.components[id]) {
+                    return "" + a.components[id].value + "\n";
+                }
+                return match;
+            });
+        }
+
     }
 
     return answers;
