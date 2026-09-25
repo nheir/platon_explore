@@ -2,10 +2,6 @@
     export let data;
 </script>
 
-<details>
-    <pre>{JSON.stringify(data, null, 2)}</pre>
-</details>
-
 {#each data.resources as resource}
     <h2>{resource.activityName}</h2>
     <ul>
@@ -15,3 +11,7 @@
         </li>
     </ul>
 {/each}
+
+<details>
+    <pre>{JSON.stringify(data, null, 2)}</pre>
+</details>
