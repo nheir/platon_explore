@@ -1,16 +1,15 @@
 <script lang="ts">
+    import SimpleTable from "../../../../components/SimpleTable.svelte";
+
     export let data;
 </script>
 
-<table>
-    {#each data.resources as resource}
-        <tr
-            ><td>{resource.user.username}</td><td
-                ><code>{resource.userId}</code></td
-            ></tr
-        >
-    {/each}
-</table>
+<SimpleTable array={data.resources} keys={["user", "userId"]}>
+    <svelte:fragment slot="row" let:row>
+        <td>{row.user.username}</td>
+        <td><code>{row.userId}</code></td>
+    </svelte:fragment>
+</SimpleTable>
 
 <details>
     <pre>{JSON.stringify(data, null, 2)}</pre>

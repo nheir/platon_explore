@@ -23,15 +23,19 @@
                   ? 1 * sortModifier
                   : 0;
 
+        if (array.length > 0 && typeof(array[0][column]) == "string") {
+            sort = (a: T, b: T) => (a[column] as string).localeCompare(b[column] as string) * sortModifier;
+        }
+
         array = array.sort(sort);
     };
 </script>
 
-<table>
+<table class="table table-striped table-hover table-sm ">
     <thead>
         <tr>
             {#each keys as key}
-                <th on:click={sort(key)}>{key}</th>
+                <th on:click={() => sort(key)}>{key}</th>
             {/each}
         </tr>
     </thead>
