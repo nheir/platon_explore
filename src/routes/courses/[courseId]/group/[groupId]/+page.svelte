@@ -3,13 +3,15 @@
 </script>
 
 <table>
-    {#each data.resources as resource}
-        <tr
-            ><td>{resource.user.username}</td><td
-                ><code>{resource.userId}</code></td
-            ></tr
-        >
-    {/each}
+    <tbody>
+        {#each data.resources as resource}
+            <tr
+                ><td>{resource.user.username}</td><td
+                    ><code>{resource.userId}</code></td
+                ></tr
+            >
+        {/each}
+    </tbody>
 </table>
 
 <details>
