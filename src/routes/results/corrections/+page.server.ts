@@ -1,5 +1,7 @@
-export async function load({ cookies }) {
-    const corrections = await fetch(`https://platon.univ-eiffel.fr/api/v1/results/corrections`, {
+import type { PageServerLoad } from "./$types";
+
+export const load: PageServerLoad = async function ({ cookies }) {
+    const correctionSummary = await fetch(`https://platon.univ-eiffel.fr/api/v1/results/corrections/summary`, {
         "credentials": "include",
         "headers": {
             "Accept": "application/json",
@@ -9,5 +11,5 @@ export async function load({ cookies }) {
         "mode": "cors"
     }).then((r) => r.json());
 
-    return corrections;
+    return correctionSummary;
 }

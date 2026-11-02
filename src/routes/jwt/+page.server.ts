@@ -1,4 +1,5 @@
-import type { Actions, PageServerLoad } from './$types';
+import { resolve } from '$app/paths';
+import type { Actions } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 
 export const actions: Actions = {
@@ -14,6 +15,6 @@ export const actions: Actions = {
       secure: false
     });
 
-    throw redirect(303, '/');
+    throw redirect(303, resolve("/", {}));
   }
 };

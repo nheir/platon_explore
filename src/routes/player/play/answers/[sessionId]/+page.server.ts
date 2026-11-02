@@ -1,4 +1,6 @@
-export async function load({ params, cookies }) {
+import type { PageServerLoad } from './$types';
+
+export const load: PageServerLoad = async function ({ params, cookies }) {
     const sessionId = params.sessionId;
 
     const answers = await fetch(`https://platon.univ-eiffel.fr/api/v1/player/play/answers`, {

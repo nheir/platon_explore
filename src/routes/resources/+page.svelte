@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { resolve } from "$app/paths";
     import SimpleTable from "../../components/SimpleTable.svelte";
 
     export let data;
@@ -14,7 +15,7 @@
     keys={["id", "name", "status", "createdAt", "updatedAt"]}
 >
     <svelte:fragment slot="row" let:row>
-        <td><a href="/resources/{row.id}"><code>{row.id}</code></a></td>
+        <td><a href="{resolve("/resources/[resourceId]", {resourceId: row.id})}"><code>{row.id}</code></a></td>
         <td>{row.name}</td>
         <td><code>{row.status}</code></td>
         <td><time datetime="{row.createdAt}">{row.createdAt}</time></td>
@@ -30,7 +31,7 @@
     keys={["id", "name", "status", "createdAt", "updatedAt"]}
 >
     <svelte:fragment slot="row" let:row>
-        <td><a href="/resources/{row.id}"><code>{row.id}</code></a></td>
+        <td><a href="{resolve("/resources/[resourceId]", {resourceId: row.id})}"><code>{row.id}</code></a></td>
         <td>{row.name}</td>
         <td><code>{row.status}</code></td>
         <td><time datetime="{row.createdAt}">{row.createdAt}</time></td>
@@ -46,7 +47,7 @@
     keys={["id", "name", "status", "createdAt", "updatedAt"]}
 >
     <svelte:fragment slot="row" let:row>
-        <td><a href="/resources/{row.id}"><code>{row.id}</code></a></td>
+        <td><a href="{resolve("/resources/[resourceId]", {resourceId: row.id})}"><code>{row.id}</code></a></td>
         <td>{row.name}</td>
         <td><code>{row.status}</code></td>
         <td><time datetime="{row.createdAt}">{row.createdAt}</time></td>
