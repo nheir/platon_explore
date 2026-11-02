@@ -15,14 +15,14 @@
     const toAlert = (type: string) => {
         if (type === "error") return "danger";
         return type;
-    }
+    };
 </script>
 
 {#if Array.isArray(content)}
     {#each content as content}
         <svelte:self {content} />
     {/each}
-{:else}
+{:else if content?.type}
     <div class={content.type}>
         <div class="alert alert-{toAlert(content.type)}">
             <h4 class="alert-heading">{content.name}</h4>
@@ -41,7 +41,7 @@
             {/if}
             {#if content.feedbacks}
                 {#each content.feedbacks as feedback}
-                    <svelte:self content={feedback}/>
+                    <svelte:self content={feedback} />
                 {/each}
             {/if}
         </div>
