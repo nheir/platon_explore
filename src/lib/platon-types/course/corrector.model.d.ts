@@ -1,4 +1,4 @@
-import { User } from '@platon/core/common'
+import type { User } from '../core/user.model'
 import { CourseMember } from './member.model'
 
 export interface Corrector {

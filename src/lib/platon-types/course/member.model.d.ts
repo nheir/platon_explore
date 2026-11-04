@@ -1,5 +1,7 @@
-import { OrderingDirections, User, UserGroup, UserOrderings, UserRoles } from '@platon/core/common'
-import { UserDTO } from '@platon/core/server'
+import type { OrderingDirections } from '../core/ordering.model';
+import type { UserGroup, UserOrderings, UserRoles } from '../core/user.model'
+
+type UserDTO = any;
 
 export enum CourseMemberRoles {
   student = 'student',

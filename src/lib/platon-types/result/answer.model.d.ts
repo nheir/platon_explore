@@ -1,4 +1,4 @@
-// import { ExerciseVariables } from '@platon/feature/compiler'
+type  ExerciseVariables = any;
 
 export enum AnswerStates {
   ANSWERED = 'ANSWERED',
@@ -37,7 +37,7 @@ export interface Answer {
   userId?: string | null
   grade: number
   sessionId: string
-  variables: any // ExerciseVariables
+  variables: ExerciseVariables
 }
 
 export const AnswerStateColors: Record<AnswerStates, string> = {

@@ -1,6 +1,6 @@
 import { RestrictionList } from './activity-restriction.model'
 import { ActivityPermissions } from './permissions.model'
-import { ActivitySettings } from '@platon/feature/compiler'
+type ActivitySettings = any;
 
 export interface Activity {
   readonly id: string

@@ -1,4 +1,5 @@
-import { ExpandableModel, OrderingDirections } from '@platon/core/common'
+import type { ExpandableModel } from '../core/expandable.model'
+import type { OrderingDirections } from '../core/ordering.model'
 import { CoursePermissions } from './permissions.model'
 import { CourseStatistic } from './statistic.model'
 
