@@ -1,4 +1,4 @@
-import { User } from '@platon/core/common'
+import type { User } from "../core/user.model"
 
 export interface CourseLeaderboardEntry {
   readonly rank: number

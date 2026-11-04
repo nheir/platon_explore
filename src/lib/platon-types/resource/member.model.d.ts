@@ -1,5 +1,6 @@
-import { OrderingDirections, UserOrderings } from '@platon/core/common'
-import { MemberPermissions } from './permissions.model'
+import type { OrderingDirections } from '../core/ordering.model'
+import type { UserOrderings } from '../core/user.model'
+import type { MemberPermissions } from './permissions.model'
 
 export interface ResourceMember {
   readonly id: string

@@ -1,4 +1,4 @@
-import { Variables } from '@platon/feature/compiler'
+type Variables = any;
 
 export const LATEST = 'latest'
 

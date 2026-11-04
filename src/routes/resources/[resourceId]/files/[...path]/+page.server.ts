@@ -1,3 +1,5 @@
+import type { ResourceFile } from "#lib/platon-types/resource/file.model.js";
+
 export async function load({ params, cookies }) {
     const resourceId = params.resourceId;
     const path = params.path;
@@ -17,5 +19,5 @@ export async function load({ params, cookies }) {
             return r.text().then(text => ({text:text}));
         }
     });
-    return resource as Platon.ResourceFile;
+    return resource as ResourceFile | {text: string};
 } 

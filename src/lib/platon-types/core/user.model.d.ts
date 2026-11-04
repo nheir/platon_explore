@@ -33,6 +33,7 @@ export interface User {
   readonly lastName?: string
   readonly email?: string
   readonly lastLogin?: Date
+  readonly lastActivity?: Date
   readonly firstLogin?: Date
   readonly hasPassword?: boolean
   readonly discordId?: string

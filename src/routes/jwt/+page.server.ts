@@ -15,6 +15,6 @@ export const actions: Actions = {
       secure: false
     });
 
-    throw redirect(303, resolve("/", {}));
+    throw redirect(303, resolve("/"));
   }
 };

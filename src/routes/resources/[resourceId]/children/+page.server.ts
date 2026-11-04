@@ -1,3 +1,5 @@
+import type { Resource } from "#lib/platon-types/resource/resource.model.js";
+
 export async function load({ params, cookies }) {
     const resourceId = params.resourceId;
 
@@ -13,5 +15,5 @@ export async function load({ params, cookies }) {
         "mode": "cors"
     }).then((r) => r.json());
 
-    return resource;
+    return resource as { resources: Resource[]};
 }

@@ -1,4 +1,5 @@
-import { AnswerStates, ExerciseResults } from '@platon/feature/result/common'
+import type { AnswerStates } from "#lib/platon-types/result/answer.model.ts"
+import type { ExerciseResults } from "#lib/platon-types/result/results.model.ts"
 
 export type UserDashboardModel = {
   user: {

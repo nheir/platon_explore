@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { resolve } from '$app/paths';
+    import { resolve } from "$app/paths";
 
     export let data;
 </script>
@@ -17,14 +17,14 @@
             </li>
         {/each}
     </ul>
+    <pre>
+{JSON.stringify(data, null, 2)}
+</pre>
 {/if}
+
 {#if data.text}
     <textarea>{data.text}</textarea>
 {/if}
-
-<pre>
-{JSON.stringify(data, null, 2)}
-</pre>
 
 <style>
     textarea {

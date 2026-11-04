@@ -1,11 +1,15 @@
-import { ExpandableModel, Level, OrderingDirections, Topic } from '@platon/core/common'
-import { ActivityNavigationModes } from '@platon/feature/compiler'
-import { ResourceStatus } from '../enums/resource-status'
-import { ResourceTypes } from '../enums/resource-types'
-import { FileCreate } from './file.model'
-import { ResourceMeta } from './metadata.model'
-import { ResourcePermissions, emptyResourcePermissions } from './permissions.model'
-import { ResourceStatistic } from './statistic.model'
+import type { ExpandableModel } from '../core/expandable.model'
+import type { Level } from '../core/level.model'
+import type { OrderingDirections } from '../core/ordering.model'
+import type { Topic } from '../core/topic.model'
+import type { FileCreate } from './file.model'
+import type { ResourceMeta } from './metadata.model'
+import type { ResourcePermissions, emptyResourcePermissions } from './permissions.model'
+import type { ResourceStatistic } from './statistic.model'
+
+type ActivityNavigationModes = any;
+interface ResourceStatus {};
+interface ResourceTypes {};
 
 /**
  * List of fields that can be expanded on a {@link Resource} object.
@@ -40,14 +44,14 @@ export interface Resource {
   /**
    * Date on which the resource has been created.
    */
-  readonly createdAt: Date
+  readonly createdAt: string
 
   /**
    * Last date on which the resource has been updated.
    * @remarks
    * - External events may trigger this field update like update of resource files.
    */
-  readonly updatedAt: Date
+  readonly updatedAt: string
 
   /**
    * Display name of the resource.
@@ -319,12 +323,12 @@ export interface ResourceFilters extends ExpandableModel<ResourceExpandableField
   /**
    * Filter resources by their types.
    */
-  readonly types?: (keyof typeof ResourceTypes)[]
+  readonly types?: (keyof ResourceTypes)[]
 
   /**
    * Filter resources by their status.
    */
-  readonly status?: (keyof typeof ResourceStatus)[]
+  readonly status?: (keyof ResourceStatus)[]
 
   /**
    * Free text search on resource, topics, and levels names.
@@ -445,235 +449,4 @@ export const RESOURCE_ORDERING_DIRECTIONS: Readonly<Record<ResourceOrderings, ke
   CREATED_AT: 'DESC',
   UPDATED_AT: 'DESC',
   RELEVANCE: 'DESC',
-}
-
-/**
- * Retrieves the ancestors of a circle in a tree structure.
- *
- * @param tree - The root of the tree structure.
- * @param circleId - The ID of the circle whose ancestors are to be retrieved.
- * @param includeSelf - Optional. Specifies whether to include the circle itself in the result. Default is false.
- * @returns An array of CircleTree objects representing the ancestors of the specified circle.
- */
-export const circleAncestors = (tree: CircleTree, circleId: string, includeSelf?: boolean): CircleTree[] => {
-  if (tree.id === circleId) {
-    return includeSelf ? [tree] : []
-  }
-
-  if (tree.children) {
-    for (const child of tree.children) {
-      if (child.id === circleId || circleAncestors(child, circleId, false).length > 0) {
-        return [...circleAncestors(child, circleId, includeSelf), tree]
-      }
-    }
-  }
-
-  return []
-}
-
-/**
- * Flattens a CircleTree by converting it into an array of CircleTree nodes.
- * The flattening is done in a depth-first manner.
- * @example
- * ```ts
- * const tree = {
- *  id: '1',
- *  name: 'root',
- *  children: [
- *    {
- *      id: '2',
- *      name: 'child1',
- *      children: [
- *        {
- *          id: '3',
- *          name: 'child2',
- *        },
- *      ],
- *    },
- *  ],
- * }
- * const flat = flattenCircleTree(tree)
- * // flat = [tree, child1, child2]
- * ```
- * @param tree - The CircleTree to flatten.
- * @returns An array of CircleTree nodes representing the flattened tree.
- */
-export const flattenCircleTree = (tree: CircleTree): CircleTree[] => {
-  const flat: CircleTree[] = []
-  const flatten = (node: CircleTree) => {
-    flat.push(node)
-    node.children?.forEach(flatten)
-  }
-  flatten(tree)
-  return flat
-}
-
-/**
- * Extracts a branch from a CircleTree by its identifier.
- * @param tree - The CircleTree to extract the branch from.
- * @param id - The identifier of the branch to extract.
- * @returns The branch of the CircleTree with the specified identifier if found, otherwise `undefined`.
- */
-export const branchFromCircleTree = (tree: CircleTree, id: string): CircleTree | undefined => {
-  if (tree.id === id) return tree
-
-  if (tree.children) {
-    for (const child of tree.children) {
-      const circle = branchFromCircleTree(child, id)
-      if (circle) {
-        return circle
-      }
-    }
-  }
-
-  return undefined
-}
-
-export const removeNodeFromCircleTree = (tree: CircleTree, id: string): CircleTree | undefined => {
-  if (tree.id === id) {
-    return undefined
-  }
-
-  const removeNodeRecursive = (node: CircleTree): boolean => {
-    if (node.children) {
-      for (let i = 0; i < node.children.length; i++) {
-        if (node.children[i].id === id) {
-          node.children.splice(i, 1)
-          return true
-        } else {
-          if (removeNodeRecursive(node.children[i])) {
-            return true
-          }
-        }
-      }
-    }
-    return false
-  }
-
-  removeNodeRecursive(tree)
-  return tree
-}
-
-/**
- * Converts a circle resource to a CircleTree object.
- * @param circle - The circle resource to convert.
- * @returns The converted CircleTree object.
- */
-export const circleTreeFromCircle = (circle: Resource): CircleTree => {
-  return {
-    id: circle.id,
-    name: circle.name,
-    code: circle.code,
-    versions: circle.metadata?.versions?.map((v) => v.tag),
-    permissions: circle.permissions ? { ...circle.permissions } : undefined,
-  }
-}
-
-/**
- * Converts a list of circles into a circle tree structure.
- * @example
- * ```ts
- * const circles = [
- *  { id: '1', name: 'Circle 1' },
- *  { id: '2', name: 'Circle 2', parentId: '1' },
- *  { id: '3', name: 'Circle 3', parentId: '2' },
- *  { id: '4', name: 'Circle 4', parentId: '2' },
- *  { id: '5', name: 'Circle 5', parentId: '1' },
- * ]
- *
- * const versions = {
- *  '1': ['v1', 'v2'],
- *  '2': ['v3'],
- *  '3': [],
- *  '4': ['v4'],
- *  '5': [],
- * }
- *
- * const tree = circleTreeFromCircleList(circles, versions)
- * // tree = {
- * //   id: '1',
- * //   name: 'Circle 1',
- * //   versions: ['v1', 'v2'],
- * //   children: [
- * //     {
- * //       id: '2',
- * //       name: 'Circle 2',
- * //       versions: ['v3'],
- * //       children: [
- * //         {
- * //           id: '3',
- * //           name: 'Circle 3',
- * //           versions: [],
- * //         },
- * //         {
- * //           id: '4',
- * //           name: 'Circle 4',
- * //           versions: ['v4'],
- * //         },
- * //       ],
- * //     },
- * //     {
- * //       id: '5',
- * //       name: 'Circle 5',
- * //       versions: [],
- * //     },
- * //   ],
- * // }
- * ```
- * @param circles - The list of circles.
- * @param versions - The list of versions for each circle.
- * @returns The circle tree structure.
- * @throws Error if the root circle is not found.
- */
-export const circleTreeFromCircleList = (circles: Resource[], versions: Record<string, string[]>): CircleTree => {
-  const root = circles.find((c) => !c.parentId && !c.personal)
-  if (!root) {
-    throw new Error('Root circle not found')
-  }
-
-  const tree: CircleTree = {
-    id: root.id,
-    name: root.name,
-    code: root.code,
-    versions: versions[root.id] || [],
-    children: [],
-    permissions: emptyResourcePermissions(),
-  }
-
-  const personnalCircles = circles.filter((c) => c.personal)
-  personnalCircles.forEach((c) => {
-    tree.children?.push({
-      id: c.id,
-      name: c.name,
-      code: c.code,
-      versions: versions[c.id] || [],
-      permissions: emptyResourcePermissions(),
-    })
-  })
-
-  const traverse = (node: CircleTree) => {
-    const children = circles.filter((c) => c.parentId === node.id).sort((a, b) => a.name.localeCompare(b.name))
-
-    children.forEach((child) => {
-      const next: CircleTree = {
-        id: child.id,
-        name: child.name,
-        code: child.code,
-        versions: versions[child.id] || [],
-        permissions: emptyResourcePermissions(),
-      }
-
-      if (!node.children) {
-        Object.assign(node, { children: [] })
-      }
-
-      node.children?.push(next)
-
-      traverse(next)
-    })
-  }
-
-  traverse(tree)
-
-  return tree
 }

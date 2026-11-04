@@ -1,3 +1,5 @@
+import type { Activity } from "#lib/platon-types/course/activity.model.d.ts";
+
 export async function load({ params, cookies }) {
     const courseId = params.courseId;
 
@@ -11,5 +13,5 @@ export async function load({ params, cookies }) {
         "mode": "cors"
     }).then((r) => r.json());
 
-    return activities;
+    return activities as { resources: Activity[] };
 }

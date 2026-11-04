@@ -1,19 +1,16 @@
 <script lang="ts">
-    import type { ActivityResults } from "#lib/platon-types/result/results.model.js";
     import { resolve } from "$app/paths";
     import SimpleTable from "../../../../components/SimpleTable.svelte";
     import ExerciseState from "../../../../components/ExerciseState.svelte";
     import ExerciseStates from "../../../../components/ExerciseStates.svelte";
     import Stat from "../../../../components/Stat.svelte";
 
+    import type { ActivityResults } from "../../../../lib/platon-types/result/results.model";
+
     export let data: ActivityResults;
 </script>
 
 <h1>Exercises</h1>
-{#snippet stat({ sum, avg, count, isRate })}
-    <td title="somme : {sum}, nombre : {count}">{avg}{isRate ? " %" : ""} <small class="text-muted">({count})</small></td>
-{/snippet}
-
 <SimpleTable
     array={data.exercises}
     keys={[
@@ -49,7 +46,7 @@
 <h1>Users</h1>
 {#each data.users as { username, exercises, activitySessionId }}
     {#if Object.values(exercises).some((e) => e.state != "NOT_STARTED")}
-        <h2>{username} <a href="{resolve("/results/session/[activitySessionId]", {activitySessionId})}"><code>{activitySessionId}</code></a></h2>
+        <h2>{username} <a href="{resolve("/results/session/[sessionId]", {sessionId: activitySessionId})}"><code>{activitySessionId}</code></a></h2>
         <SimpleTable
             array={Object.values(exercises).map((v,i) => ({i, ...v}))}
             keys={["i", "state", "title", "id", "attempts", "duration", "grade"]}

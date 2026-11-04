@@ -1,7 +1,9 @@
 <script lang="ts">
-    export let data;
+    import type { User } from "../../../lib/platon-types/core/user.model";
 
-    const keys = [
+    export let data: User;
+
+    const keys: (keyof User)[] = [
         "id",
         "username",
         "firstName",

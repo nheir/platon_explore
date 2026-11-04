@@ -18,7 +18,8 @@
     import InputBox from "./InputBox.svelte";
     import RadioGroup from "./RadioGroup.svelte";
 
-    import type { ExercisePlayer } from "#lib/platon-types/player/player.model.js";
+    import type { ExercisePlayer } from "../lib/platon-types/player/player.model";
+
 
     export let exercises: ExercisePlayer[];
     export let dontRepeatStatement = true;

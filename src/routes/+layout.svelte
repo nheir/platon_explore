@@ -8,7 +8,7 @@
     <div class="navbar-nav">
         <a class="nav-link" href="{resolve("/")}">home</a>
         <a class="nav-link" class:active={page.url.pathname.startsWith(resolve("/courses"))} href="{resolve("/courses")}">courses</a>
-        <a class="nav-link" class:active={page.url.pathname.startsWith(resolve("/results"))} href="{resolve("/results/corrections")}">corrections</a>
+        <a class="nav-link" class:active={page.url.pathname.includes("/results")} href="{resolve("/results/corrections")}">corrections</a>
         <a class="nav-link" class:active={page.url.pathname.startsWith(resolve("/resources"))} href="{resolve("/resources")}">resources</a>
     </div>
 </nav>

@@ -18,14 +18,15 @@
                 <td>{ex.title}</td>
                 <td><ExerciseState state={ex.state} /></td>
                 <td>
-                    <a href={resolve(`/player/play/answers/${ex.sessionId}`)}
+                    <a href={resolve(`/player/play/answers/[sessionId]`, {sessionId: ex.sessionId})}
                         >Answers</a
                     >
                 </td>
                 <td>
                     <a
                         href={resolve(
-                            `/player/play/exercises/${activitySessionId}/${ex.sessionId}`,
+                            `/player/play/exercises/[activitySessionId]/[exerciseSessionId]`,
+                            { activitySessionId, exerciseSessionId: ex.sessionId},
                         )}>Play</a
                     >
                 </td>

@@ -3,15 +3,11 @@
     import Exercise from "../../../../../components/Exercise.svelte";
 
     export let data: {
-        exercises: (ExercisePlayer & {
-            parts: (
-                | { type: "text"; text: string }
-                | { type: "component"; component: any }
-            )[];
-        })[];
+        exercises: ExercisePlayer[];
     };
 </script>
 
+{#if data.exercises}
 <Exercise exercises={data.exercises}/>
-
+{/if}
 <details><pre>{JSON.stringify(data)}</pre></details>

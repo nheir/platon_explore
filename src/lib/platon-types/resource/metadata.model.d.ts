@@ -1,5 +1,7 @@
-import { ActivitySettings, PleConfigJSON } from '@platon/feature/compiler'
-import { FileVersion } from './file.model'
+type ActivitySettings = any;
+type PleConfigJSON = any;
+
+import type { FileVersion } from './file.model'
 
 export interface CircleResourceMeta {
   versions: FileVersion[]

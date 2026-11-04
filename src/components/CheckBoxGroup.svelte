@@ -16,8 +16,10 @@
 <div class:d-flex={content.horizontal} class:gap-3={content.horizontal}>
     {#each items as item}
         <div class="form-check" style="{item.css ?? ''}">
-            <input class="form-check-input" type="checkbox" checked={!!item.checked} disabled />
-            <label class="form-check-label">{item.content}</label>
+            <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" checked={!!item.checked} disabled />
+                {item.content}
+            </label>
         </div>
     {/each}
 </div>

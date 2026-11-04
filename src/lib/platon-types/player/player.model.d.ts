@@ -1,8 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { ActivitySettings, ActivityVariables, ExerciseFeedback, Variables } from '@platon/feature/compiler'
-import { ActivityOpenStates } from '@platon/feature/course/common'
-import { AnswerStates } from '@platon/feature/result/common'
 
 export enum PlayerActions {
   NEXT_HINT = 'NEXT_HINT',
@@ -179,79 +176,3 @@ export declare type Player = ExercisePlayer | ActivityPlayer
 export interface PlayerActivityVariables extends ActivityVariables {
   navigation: PlayerNavigation
 }
-
-/**
- * Determines if an activity has timed out.
- *
- * The function prioritizes the `startedAt` time plus the `duration`. If either
- * `startedAt` or `duration` is not available, it falls back to using the `closeAt`
- * time.
- *
- * - If both `startedAt` and `duration` are available, it calculates the timeout based on `startedAt` + `duration`. This covers the case where the user leaves and resumes an activity, as the time continues even when the user is not active.
- * - If either `startedAt` or `duration` is not available, it falls back to using `closeAt` to determine if the activity is timeouted.
- * - If neither `closeAt` nor `startedAt` and `duration` are available, the function returns false, which means the activity is not considered timeouted.
- *
- * @param player - The activity player object containing the relevant time and settings.
- * @returns True if the activity is timeouted, false otherwise.
- */
-export const isTimeouted = (player: Partial<ActivityPlayer>): boolean => {
-  const extraTime = (player.navigation?.extraTime || 0) * 1000
-  const closeAt = player.closeAt ? new Date(player.closeAt).getTime() + extraTime : null
-  const startedAt = player.startedAt ? new Date(player.startedAt).getTime() : null
-  const duration = (player.settings?.duration || 0) * 1000 + extraTime
-
-  // Get the current timestamp
-  const currentTime = new Date().getTime()
-
-  // Check if the activity is timeouted
-  let isTimeouted = false
-
-  if (duration && startedAt) {
-    // Prioritize startedAt + duration
-    isTimeouted = currentTime > startedAt + duration
-  } else if (closeAt != null) {
-    // Fallback to closeAt if startedAt or duration is not available
-    isTimeouted = currentTime > closeAt
-  }
-
-  return isTimeouted
-}
-
-/**
- * Calculates the time at which the activity will be closed.
- *
- * The function prioritizes the startedAt time plus the duration. If either
- * startedAt or duration is not available, it falls back to using the closeAt
- * time.
- *
- * @param player - The activity player object containing the relevant time and settings.
- * @returns The timestamp at which the activity will be closed, or null if the closing time cannot be determined.
- */
-export const getClosingTime = (player: Partial<ActivityPlayer>): number | null => {
-  const startedAt = player.startedAt ? new Date(player.startedAt).getTime() : null
-  const extraTime = (player.navigation?.extraTime || 0) * 1000
-  const closeAt = player.closeAt ? new Date(player.closeAt).getTime() + extraTime : null
-  const duration = (player.settings?.duration || 0) * 1000 + extraTime
-  let closingTime: number | null = null
-
-  if (duration != 0 && startedAt != null) {
-    closingTime = startedAt + duration
-  }
-  if (closeAt != null && (closingTime == null || closeAt < closingTime)) {
-    closingTime = closeAt
-  }
-
-  return closingTime
-}
-
-/**
- * Determines if an exercise player contains an error log.
- *
- * @param player - The exercise player object to check.
- * @returns True if the player contains a `platon_logs` with type `error`, false otherwise.
- */
-export const hasError = (player: Partial<ExercisePlayer>): boolean => {
-  return player.platon_logs?.some((log) => log.type === LogType.ERROR) ?? false
-}
-
-export const NO_COPY_PASTER_CLASS_NAME = 'no-copy-paste'
