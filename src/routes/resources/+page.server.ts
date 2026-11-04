@@ -1,3 +1,4 @@
+import type { Resource } from "#lib/platon-types/resource/resource.model.js";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async function ({ cookies }) {
@@ -11,5 +12,5 @@ export const load: PageServerLoad = async function ({ cookies }) {
         "mode": "cors"
     }).then((r) => r.json());
 
-    return resource as { resources: Platon.Resource[]};
+    return resource as { resources: Resource[] };
 }

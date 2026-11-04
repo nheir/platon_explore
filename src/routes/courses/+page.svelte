@@ -14,7 +14,7 @@
         <td><a href="{resolve("/courses/[courseId]/activities", {courseId: row.id})}"><code>{row.id}</code></a></td>
         <td>{row.name}</td>
         <td>{row.desc}</td>
-        <td><code>{row.ownerId}</code></td>
+        <td><a href="{resolve("/users/[userIdOrName]", {userIdOrName: row.ownerId})}"><code>{row.ownerId}</code></a></td>
         <td><time datetime="{row.createdAt}">{row.createdAt}</time></td>
         <td><time datetime="{row.updatedAt}">{row.updatedAt}</time></td>
         <td><code>{row.isTest}</code></td>

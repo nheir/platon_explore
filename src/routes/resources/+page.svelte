@@ -1,8 +1,9 @@
 <script lang="ts">
+    import type { Resource } from "#lib/platon-types/resource/resource.model.js";
     import { resolve } from "$app/paths";
     import SimpleTable from "../../components/SimpleTable.svelte";
 
-    export let data;
+    export let data: { resources: Resource[]};
     let activities = data.resources.filter((r) => r.type == "ACTIVITY");
     let exercises = data.resources.filter((r) => r.type == "EXERCISE");
     let circles = data.resources.filter((r) => r.type == "CIRCLE");
