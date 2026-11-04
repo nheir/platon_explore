@@ -3,7 +3,7 @@
 
 </script>
 <form method="post" action="{resolve("/jwt")}">
-    <input name="token">
+    <input name="token" placeholder="Placer ici le token d'accès">
     <input value="Use" type="submit">
 </form>
 
